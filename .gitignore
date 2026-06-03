@@ -2,6 +2,7 @@
 node_modules/
 test-results/
 playwright-report/
+supabase/.temp/
 
 # Local Codex workspace setup, not part of the public landing deployment.
 .codex/
