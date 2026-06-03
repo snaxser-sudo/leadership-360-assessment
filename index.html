@@ -1,0 +1,1421 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Диагностика компетенций топ-менеджера</title>
+    <meta
+      name="description"
+      content="Лендинг для анонимной оценки девяти топ-менеджеров по девяти управленческим компетенциям."
+    />
+    <style>
+      :root {
+        --ink: #17202a;
+        --muted: #5c6773;
+        --paper: #f6f3ee;
+        --surface: #ffffff;
+        --line: #d9d2c7;
+        --navy: #21394f;
+        --teal: #1d7f7a;
+        --green: #4f8f5a;
+        --amber: #c38a2f;
+        --rust: #a4553b;
+        --shadow: 0 18px 55px rgba(23, 32, 42, 0.13);
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html {
+        scroll-behavior: smooth;
+      }
+
+      body {
+        margin: 0;
+        color: var(--ink);
+        background: var(--paper);
+        font-family:
+          Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+          sans-serif;
+        line-height: 1.5;
+      }
+
+      a {
+        color: inherit;
+      }
+
+      .hero {
+        position: relative;
+        min-height: 86svh;
+        display: grid;
+        align-items: center;
+        overflow: hidden;
+        color: #fff;
+        background:
+          linear-gradient(90deg, rgba(16, 24, 31, 0.86) 0%, rgba(16, 24, 31, 0.66) 34%, rgba(16, 24, 31, 0.12) 72%),
+          linear-gradient(0deg, rgba(16, 24, 31, 0.32), rgba(16, 24, 31, 0.02)),
+          url("assets/executive-assessment-hero.png") center / cover no-repeat;
+      }
+
+      .hero__inner,
+      .section__inner,
+      .nav__inner {
+        width: min(1160px, calc(100% - 40px));
+        margin: 0 auto;
+      }
+
+      .nav {
+        position: absolute;
+        inset: 0 0 auto;
+        z-index: 2;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.18);
+        background: rgba(15, 23, 29, 0.22);
+        backdrop-filter: blur(10px);
+      }
+
+      .nav__inner {
+        min-height: 68px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 20px;
+      }
+
+      .brand {
+        display: flex;
+        align-items: center;
+        gap: 11px;
+        font-weight: 700;
+      }
+
+      .brand__mark {
+        width: 34px;
+        height: 34px;
+        display: grid;
+        place-items: center;
+        border: 1px solid rgba(255, 255, 255, 0.32);
+        background: rgba(255, 255, 255, 0.12);
+      }
+
+      .nav__links {
+        display: flex;
+        align-items: center;
+        gap: 24px;
+        color: rgba(255, 255, 255, 0.82);
+        font-size: 14px;
+      }
+
+      .nav__links a {
+        text-decoration: none;
+      }
+
+      .hero__content {
+        width: min(690px, 100%);
+        padding-top: 64px;
+      }
+
+      .eyebrow {
+        margin: 0 0 18px;
+        color: #f1d095;
+        font-size: 13px;
+        font-weight: 800;
+        letter-spacing: 0;
+        text-transform: uppercase;
+      }
+
+      h1,
+      h2,
+      h3,
+      p {
+        margin-top: 0;
+      }
+
+      h1 {
+        margin-bottom: 22px;
+        max-width: 680px;
+        font-size: clamp(40px, 7vw, 78px);
+        line-height: 0.96;
+        letter-spacing: 0;
+      }
+
+      .hero__lead {
+        max-width: 590px;
+        margin-bottom: 32px;
+        color: rgba(255, 255, 255, 0.86);
+        font-size: clamp(18px, 2vw, 22px);
+      }
+
+      .hero__actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+      }
+
+      .button {
+        min-height: 46px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        padding: 0 18px;
+        border: 1px solid transparent;
+        color: #111820;
+        background: #f4c86f;
+        font-weight: 800;
+        text-decoration: none;
+      }
+
+      .button svg {
+        width: 18px;
+        height: 18px;
+      }
+
+      .button--ghost {
+        color: #fff;
+        border-color: rgba(255, 255, 255, 0.4);
+        background: rgba(255, 255, 255, 0.08);
+      }
+
+      .metric-strip {
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        z-index: 2;
+        background: rgba(246, 243, 238, 0.96);
+        color: var(--ink);
+      }
+
+      .metric-strip__inner {
+        width: min(1160px, calc(100% - 40px));
+        min-height: 92px;
+        margin: 0 auto;
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        align-items: center;
+        gap: 22px;
+      }
+
+      .metric {
+        border-left: 1px solid var(--line);
+        padding-left: 18px;
+      }
+
+      .metric:first-child {
+        border-left: 0;
+        padding-left: 0;
+      }
+
+      .metric strong {
+        display: block;
+        font-size: 24px;
+        line-height: 1;
+      }
+
+      .metric span {
+        display: block;
+        margin-top: 7px;
+        color: var(--muted);
+        font-size: 13px;
+      }
+
+      .section {
+        padding: 84px 0;
+      }
+
+      .section--competencies {
+        background: var(--paper);
+      }
+
+      .section--assessment {
+        background:
+          linear-gradient(180deg, rgba(255, 255, 255, 0.84), rgba(255, 255, 255, 0.58)),
+          var(--paper);
+      }
+
+      .section__heading {
+        display: grid;
+        grid-template-columns: minmax(0, 0.92fr) minmax(280px, 0.48fr);
+        gap: 42px;
+        align-items: end;
+        margin-bottom: 36px;
+      }
+
+      h2 {
+        margin-bottom: 14px;
+        font-size: clamp(32px, 4vw, 52px);
+        line-height: 1.04;
+        letter-spacing: 0;
+      }
+
+      .section__heading p {
+        margin-bottom: 0;
+        color: var(--muted);
+        font-size: 17px;
+      }
+
+      .legend {
+        display: grid;
+        gap: 10px;
+        padding: 18px;
+        border: 1px solid var(--line);
+        background: rgba(255, 255, 255, 0.58);
+      }
+
+      .legend__row {
+        display: grid;
+        grid-template-columns: 32px 1fr;
+        gap: 10px;
+        align-items: baseline;
+      }
+
+      .legend__row strong {
+        color: var(--navy);
+      }
+
+      .legend__row span {
+        color: var(--muted);
+        font-size: 14px;
+      }
+
+      .competency-grid {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 18px;
+      }
+
+      .competency-card {
+        min-height: 360px;
+        display: flex;
+        flex-direction: column;
+        padding: 22px;
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        background: var(--surface);
+        box-shadow: 0 10px 26px rgba(23, 32, 42, 0.06);
+      }
+
+      .competency-card__top {
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        gap: 12px;
+        margin-bottom: 15px;
+      }
+
+      .competency-card__number {
+        min-width: 38px;
+        height: 38px;
+        display: grid;
+        place-items: center;
+        border: 1px solid rgba(29, 127, 122, 0.28);
+        color: var(--teal);
+        font-weight: 900;
+      }
+
+      .competency-card h3 {
+        margin-bottom: 8px;
+        font-size: 22px;
+        line-height: 1.16;
+      }
+
+      .competency-card__summary {
+        margin-bottom: 18px;
+        color: var(--muted);
+        font-size: 15px;
+      }
+
+      .scale-track {
+        position: relative;
+        height: 10px;
+        margin: 4px 0 20px;
+        border-radius: 999px;
+        background:
+          linear-gradient(90deg, var(--rust), var(--amber) 46%, var(--teal) 100%);
+      }
+
+      .scale-track::before,
+      .scale-track::after {
+        content: "";
+        position: absolute;
+        top: 50%;
+        width: 18px;
+        height: 18px;
+        border: 3px solid #fff;
+        border-radius: 50%;
+        box-shadow: 0 0 0 1px rgba(23, 32, 42, 0.15);
+        transform: translateY(-50%);
+      }
+
+      .scale-track::before {
+        left: 0;
+        background: var(--rust);
+      }
+
+      .scale-track::after {
+        right: 0;
+        background: var(--teal);
+      }
+
+      .levels {
+        margin-top: auto;
+        display: grid;
+        gap: 9px;
+      }
+
+      .level {
+        display: grid;
+        grid-template-columns: 34px 1fr;
+        gap: 10px;
+        padding-top: 9px;
+        border-top: 1px solid #ece6dc;
+      }
+
+      .level strong {
+        color: var(--navy);
+        font-size: 15px;
+      }
+
+      .level span {
+        color: var(--muted);
+        font-size: 14px;
+      }
+
+      .assessment-layout {
+        display: grid;
+        grid-template-columns: minmax(260px, 0.34fr) minmax(0, 1fr);
+        gap: 26px;
+        align-items: start;
+      }
+
+      .panel {
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        background: var(--surface);
+        box-shadow: var(--shadow);
+      }
+
+      .manager-panel {
+        padding: 20px;
+      }
+
+      .panel-heading h3,
+      .evaluation-form h3,
+      .summary-board h3 {
+        margin: 0;
+        font-size: 24px;
+        line-height: 1.15;
+      }
+
+      .manager-list {
+        display: grid;
+        gap: 8px;
+        margin-top: 18px;
+      }
+
+      .manager-button {
+        width: 100%;
+        min-height: 58px;
+        display: grid;
+        grid-template-columns: 1fr auto;
+        gap: 8px;
+        align-items: center;
+        padding: 12px 14px;
+        border: 1px solid #e6ded2;
+        border-radius: 8px;
+        color: var(--ink);
+        background: #fbfaf7;
+        font: inherit;
+        text-align: left;
+        cursor: pointer;
+      }
+
+      .manager-button strong {
+        font-size: 14px;
+      }
+
+      .manager-button span {
+        color: var(--muted);
+        font-size: 12px;
+      }
+
+      .manager-button.is-active {
+        border-color: rgba(29, 127, 122, 0.45);
+        background: #eef8f5;
+        box-shadow: inset 4px 0 0 var(--teal);
+      }
+
+      .privacy-note {
+        margin-top: 18px;
+        padding: 14px;
+        border-left: 4px solid var(--teal);
+        background: #eef8f5;
+        color: #244e4b;
+        font-size: 14px;
+      }
+
+      .evaluation-form {
+        overflow: hidden;
+      }
+
+      .evaluation-form__header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 18px;
+        padding: 22px;
+        border-bottom: 1px solid #ece6dc;
+      }
+
+      .evaluation-form__header p {
+        margin: 8px 0 0;
+        color: var(--muted);
+        font-size: 14px;
+      }
+
+      .button--compact {
+        flex: 0 0 auto;
+        min-height: 42px;
+      }
+
+      .score-list {
+        display: grid;
+        gap: 0;
+        overflow: hidden;
+      }
+
+      .score-row {
+        display: grid;
+        grid-template-columns: minmax(190px, 0.42fr) minmax(240px, 1fr);
+        gap: 18px;
+        align-items: center;
+        margin: 0;
+        padding: 18px 20px;
+        border: 0;
+        border-bottom: 1px solid #ece6dc;
+      }
+
+      .score-row:last-child {
+        border-bottom: 0;
+      }
+
+      .score-row legend {
+        padding: 0;
+        font-weight: 800;
+        line-height: 1.2;
+      }
+
+      .rating-scale {
+        display: grid;
+        grid-template-columns: repeat(6, minmax(34px, 1fr));
+        gap: 6px;
+      }
+
+      .rating-scale label {
+        position: relative;
+        display: block;
+      }
+
+      .rating-scale input {
+        position: absolute;
+        inline-size: 1px;
+        block-size: 1px;
+        opacity: 0;
+        pointer-events: none;
+      }
+
+      .rating-scale span {
+        display: grid;
+        place-items: center;
+        height: 38px;
+        border: 1px solid #d8d0c5;
+        border-radius: 6px;
+        color: var(--muted);
+        background: #fbfaf7;
+        font-weight: 900;
+        cursor: pointer;
+      }
+
+      .rating-scale input:focus-visible + span {
+        outline: 3px solid rgba(29, 127, 122, 0.22);
+        outline-offset: 2px;
+      }
+
+      .rating-scale input:checked + span {
+        border-color: var(--teal);
+        color: #fff;
+        background: var(--teal);
+      }
+
+      .comment-field {
+        display: grid;
+        gap: 9px;
+        padding: 20px;
+        border-top: 1px solid #ece6dc;
+      }
+
+      .comment-field span {
+        font-weight: 800;
+      }
+
+      .comment-field textarea {
+        width: 100%;
+        resize: vertical;
+        min-height: 104px;
+        padding: 12px 14px;
+        border: 1px solid #d8d0c5;
+        border-radius: 8px;
+        color: var(--ink);
+        background: #fbfaf7;
+        font: inherit;
+      }
+
+      .comment-field textarea:focus {
+        outline: 3px solid rgba(29, 127, 122, 0.18);
+        border-color: var(--teal);
+      }
+
+      .form-message {
+        min-height: 24px;
+        margin: 0;
+        padding: 0 20px 20px;
+        color: var(--teal);
+        font-weight: 800;
+      }
+
+      .result__label {
+        display: block;
+        margin-bottom: 8px;
+        color: var(--muted);
+        font-size: 14px;
+        font-weight: 800;
+        text-transform: uppercase;
+      }
+
+      .summary-board {
+        margin-top: 34px;
+      }
+
+      .summary-board__top {
+        display: flex;
+        align-items: end;
+        justify-content: space-between;
+        gap: 20px;
+        margin-bottom: 16px;
+      }
+
+      .summary-actions {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: flex-end;
+        gap: 10px;
+      }
+
+      .utility-button {
+        min-height: 38px;
+        padding: 0 13px;
+        border: 1px solid #cfc6b8;
+        border-radius: 6px;
+        color: var(--navy);
+        background: #fff;
+        font: inherit;
+        font-weight: 800;
+        cursor: pointer;
+      }
+
+      .utility-button--danger {
+        color: var(--rust);
+      }
+
+      .summary-table-wrap {
+        overflow-x: auto;
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        background: var(--surface);
+        box-shadow: 0 10px 26px rgba(23, 32, 42, 0.06);
+      }
+
+      .summary-table {
+        width: 100%;
+        min-width: 1080px;
+        border-collapse: collapse;
+        font-size: 14px;
+      }
+
+      .summary-table th,
+      .summary-table td {
+        padding: 12px 10px;
+        border-bottom: 1px solid #ece6dc;
+        text-align: center;
+        vertical-align: middle;
+      }
+
+      .summary-table th {
+        color: var(--muted);
+        background: #fbfaf7;
+        font-size: 12px;
+        font-weight: 900;
+        text-transform: uppercase;
+      }
+
+      .summary-table th:first-child,
+      .summary-table td:first-child {
+        min-width: 166px;
+        text-align: left;
+        position: sticky;
+        left: 0;
+        z-index: 1;
+        background: inherit;
+      }
+
+      .summary-table tbody tr {
+        background: var(--surface);
+      }
+
+      .summary-table tbody tr:hover {
+        background: #fbfaf7;
+      }
+
+      .table-manager {
+        padding: 0;
+        border: 0;
+        color: var(--navy);
+        background: transparent;
+        font: inherit;
+        font-weight: 900;
+        cursor: pointer;
+      }
+
+      .summary-cell {
+        font-weight: 900;
+      }
+
+      .summary-cell.is-empty {
+        color: #a7a098;
+        font-weight: 700;
+      }
+
+      .summary-cell.is-low {
+        color: var(--rust);
+      }
+
+      .summary-cell.is-high {
+        color: var(--teal);
+      }
+
+      .comments-panel {
+        margin-top: 18px;
+        padding: 18px;
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        background: rgba(255, 255, 255, 0.64);
+      }
+
+      .comments-panel h4 {
+        margin: 0 0 12px;
+        font-size: 18px;
+      }
+
+      .comment-list {
+        display: grid;
+        gap: 10px;
+      }
+
+      .comment-item {
+        padding: 12px 14px;
+        border-left: 4px solid var(--amber);
+        background: #fff7e8;
+        color: #4c3922;
+      }
+
+      .comment-item p {
+        margin: 0;
+      }
+
+      .comment-item span {
+        display: block;
+        margin-top: 6px;
+        color: #7c6a52;
+        font-size: 12px;
+      }
+
+      .footer {
+        padding: 28px 0 42px;
+        color: var(--muted);
+        background: var(--paper);
+        font-size: 14px;
+      }
+
+      @media (max-width: 980px) {
+        .hero {
+          min-height: 82svh;
+          background-position: 58% center;
+        }
+
+        .section__heading,
+        .assessment-layout {
+          grid-template-columns: 1fr;
+        }
+
+        .competency-grid {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+
+        .summary-board__top {
+          align-items: flex-start;
+          flex-direction: column;
+        }
+      }
+
+      @media (max-width: 720px) {
+        .hero {
+          min-height: 78svh;
+          background:
+            linear-gradient(90deg, rgba(16, 24, 31, 0.9), rgba(16, 24, 31, 0.56)),
+            url("assets/executive-assessment-hero.png") 60% center / cover no-repeat;
+        }
+
+        .hero__inner,
+        .section__inner,
+        .nav__inner,
+        .metric-strip__inner {
+          width: min(100% - 28px, 1160px);
+        }
+
+        .nav__links {
+          display: none;
+        }
+
+        .hero__content {
+          padding: 88px 0 110px;
+        }
+
+        h1 {
+          font-size: clamp(36px, 12vw, 52px);
+        }
+
+        .metric-strip__inner {
+          min-height: 86px;
+          grid-template-columns: repeat(3, minmax(0, 1fr));
+          gap: 10px;
+        }
+
+        .metric {
+          padding-left: 10px;
+        }
+
+        .metric strong {
+          font-size: 20px;
+        }
+
+        .metric span {
+          font-size: 11px;
+        }
+
+        .section {
+          padding: 56px 0;
+        }
+
+        .competency-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .competency-card {
+          min-height: auto;
+          padding: 18px;
+        }
+
+        .manager-panel {
+          padding: 16px;
+        }
+
+        .evaluation-form__header {
+          align-items: stretch;
+          flex-direction: column;
+          padding: 18px;
+        }
+
+        .button--compact {
+          width: 100%;
+        }
+
+        .score-row {
+          grid-template-columns: 1fr;
+          gap: 10px;
+          padding: 16px;
+        }
+
+        .rating-scale {
+          grid-template-columns: repeat(6, minmax(34px, 1fr));
+          gap: 4px;
+        }
+
+        .comment-field {
+          padding: 16px;
+        }
+
+        .summary-actions {
+          width: 100%;
+          justify-content: stretch;
+        }
+
+        .utility-button {
+          flex: 1 1 150px;
+        }
+
+        .summary-table {
+          min-width: 980px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header class="hero">
+      <nav class="nav" aria-label="Основная навигация">
+        <div class="nav__inner">
+          <div class="brand">
+            <span class="brand__mark" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M12 3v18" />
+                <path d="M5 9h14" />
+                <path d="m8 6-3 3 3 3" />
+                <path d="m16 6 3 3-3 3" />
+              </svg>
+            </span>
+            Leadership 360
+          </div>
+          <div class="nav__links">
+            <a href="#competencies">Компетенции</a>
+            <a href="#assessment">Диагностика</a>
+          </div>
+        </div>
+      </nav>
+
+      <div class="hero__inner">
+        <div class="hero__content">
+          <p class="eyebrow">Executive assessment</p>
+          <h1>Диагностика компетенций топ-менеджера</h1>
+          <p class="hero__lead">
+            Девять управленческих критериев с понятной шкалой 0-5 и практической формой
+            анонимной оценки команды топ-менеджеров.
+          </p>
+          <div class="hero__actions">
+            <a class="button" href="#assessment" aria-label="Перейти к диагностике">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M12 5v14" />
+                <path d="m19 12-7 7-7-7" />
+              </svg>
+              Оценить менеджера
+            </a>
+            <a class="button button--ghost" href="#competencies">Посмотреть шкалы</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="metric-strip" aria-label="Ключевые параметры методики">
+        <div class="metric-strip__inner">
+          <div class="metric">
+            <strong>9</strong>
+            <span>компетенций</span>
+          </div>
+          <div class="metric">
+            <strong>0-5</strong>
+            <span>уровней зрелости</span>
+          </div>
+          <div class="metric">
+            <strong>9</strong>
+            <span>топ-менеджеров</span>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <main>
+      <section class="section section--competencies" id="competencies">
+        <div class="section__inner">
+          <div class="section__heading">
+            <div>
+              <p class="eyebrow">Блок 1</p>
+              <h2>Компетенции и поведенческая шкала</h2>
+              <p>
+                Каждая компетенция описана через наблюдаемое поведение. Это помогает оценивать
+                не впечатление от человека, а то, как именно он действует в управленческой роли.
+              </p>
+            </div>
+            <div class="legend" aria-label="Расшифровка шкалы">
+              <div class="legend__row"><strong>0</strong><span>компетенция не проявляется</span></div>
+              <div class="legend__row"><strong>3</strong><span>проявляется стабильно, но с ограничениями</span></div>
+              <div class="legend__row"><strong>5</strong><span>проявляется самостоятельно, быстро и системно</span></div>
+            </div>
+          </div>
+
+          <div class="competency-grid" id="competencyGrid"></div>
+        </div>
+      </section>
+
+      <section class="section section--assessment" id="assessment">
+        <div class="section__inner">
+          <div class="section__heading">
+            <div>
+              <p class="eyebrow">Блок 2</p>
+              <h2>Анонимная оценка 9 топ-менеджеров</h2>
+              <p>
+                Каждый посетитель выбирает топ-менеджера, выставляет уровень 0-5 по каждой
+                компетенции и может оставить обезличенный комментарий. Итоги собираются в сводную
+                таблицу по людям и компетенциям.
+              </p>
+            </div>
+          </div>
+
+          <div class="assessment-layout">
+            <aside class="panel manager-panel">
+              <div class="panel-heading">
+                <span class="result__label">Оцениваемый</span>
+                <h3>Команда топ-менеджеров</h3>
+              </div>
+              <div class="manager-list" id="managerList"></div>
+              <div class="privacy-note">
+                Форма не запрашивает имя оценивающего. Комментарии сохраняются только как
+                анонимные записи.
+              </div>
+            </aside>
+
+            <form class="panel evaluation-form" id="evaluationForm">
+              <div class="evaluation-form__header">
+                <div>
+                  <span class="result__label">Форма оценки</span>
+                  <h3 id="activeManagerTitle">Топ-менеджер 1</h3>
+                  <p id="activeManagerMeta">Пока нет сохранённых оценок.</p>
+                </div>
+                <button class="button button--compact" type="submit">Сохранить оценку</button>
+              </div>
+              <div class="score-list" id="scoreList"></div>
+              <label class="comment-field" for="commentInput">
+                <span>Комментарий</span>
+                <textarea
+                  id="commentInput"
+                  name="comment"
+                  rows="4"
+                  maxlength="800"
+                  placeholder="Что важно учесть по этому руководителю?"
+                ></textarea>
+              </label>
+              <p class="form-message" id="formMessage" aria-live="polite"></p>
+            </form>
+          </div>
+
+          <div class="summary-board">
+            <div class="summary-board__top">
+              <div>
+                <span class="result__label">Консолидация</span>
+                <h3>Средняя оценка по каждому топ-менеджеру и компетенции</h3>
+              </div>
+              <div class="summary-actions">
+                <button class="utility-button" type="button" id="exportButton">Скачать CSV</button>
+                <button class="utility-button utility-button--danger" type="button" id="resetButton">
+                  Очистить демо-данные
+                </button>
+              </div>
+            </div>
+            <div class="summary-table-wrap">
+              <table class="summary-table" id="summaryTable"></table>
+            </div>
+            <div class="comments-panel" id="commentsPanel"></div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <div class="section__inner">
+        Leadership 360 · шаблон лендинга для оценки управленческих компетенций
+      </div>
+    </footer>
+
+    <script>
+      const competencies = [
+        {
+          title: "Принятие решений",
+          summary: "Умение выбирать курс действий в неопределенности и брать ответственность за последствия.",
+          low: "решения избегаются или перекладываются",
+          mid: "решения принимаются после долгого согласования",
+          high: "решения принимаются самостоятельно, быстро и с учетом сторон"
+        },
+        {
+          title: "Стратегическое мышление",
+          summary: "Способность видеть рынок, долгосрочные риски и точки роста за пределами текущей операционки.",
+          low: "фокус только на срочных задачах",
+          mid: "стратегия формулируется, но слабо связана с действиями",
+          high: "приоритеты связаны с рынком, ресурсами и горизонтом 2-3 года"
+        },
+        {
+          title: "Управление людьми",
+          summary: "Создание сильной команды, постановка целей, развитие лидеров и работа с результативностью.",
+          low: "команда зависит от личного контроля руководителя",
+          mid: "цели есть, но обратная связь нерегулярна",
+          high: "люди понимают цели, растут и несут ответственность"
+        },
+        {
+          title: "Финансовая грамотность",
+          summary: "Понимание экономики решений: P&L, маржинальность, инвестиции, cash flow и окупаемость.",
+          low: "решения принимаются без финансовой логики",
+          mid: "цифры учитываются, но не управляют приоритетами",
+          high: "финансовые последствия заранее встроены в решения"
+        },
+        {
+          title: "Коммуникация и влияние",
+          summary: "Способность ясно объяснять позицию, договариваться и проводить решения через разные группы.",
+          low: "позиция звучит неясно или конфликтно",
+          mid: "договоренности достигаются, но требуют повторного давления",
+          high: "сложные решения принимаются людьми осознанно и без лишнего шума"
+        },
+        {
+          title: "Управление изменениями",
+          summary: "Перевод компании через трансформации: от причины изменений до внедрения и закрепления.",
+          low: "изменения запускаются рывками и быстро затухают",
+          mid: "план есть, но сопротивление тормозит внедрение",
+          high: "изменения проходят системно, с понятной логикой и метриками"
+        },
+        {
+          title: "Клиент и рынок",
+          summary: "Ориентация на потребности клиента, конкурентную среду и реальную ценность продукта.",
+          low: "решения строятся на внутренних предположениях",
+          mid: "клиентские данные используются эпизодически",
+          high: "рынок и клиент регулярно меняют продуктовые и операционные решения"
+        },
+        {
+          title: "Операционная дисциплина",
+          summary: "Умение превращать цели в процессы, метрики, регулярный контроль и предсказуемый результат.",
+          low: "результат зависит от героизма отдельных людей",
+          mid: "процессы есть, но не всегда выдерживаются",
+          high: "операционная система держит качество, сроки и ответственность"
+        },
+        {
+          title: "Лидерская зрелость",
+          summary: "Саморегуляция, этика, устойчивость под давлением и способность быть опорой для организации.",
+          low: "давление ведет к резким реакциям и потере доверия",
+          mid: "устойчивость есть, но в кризисе роль размывается",
+          high: "руководитель сохраняет ясность, доверие и высокий стандарт решений"
+        }
+      ];
+
+      const managers = Array.from({ length: 9 }, (_, index) => `Топ-менеджер ${index + 1}`);
+      const competencyShortNames = [
+        "Решения",
+        "Стратегия",
+        "Люди",
+        "Финансы",
+        "Влияние",
+        "Изменения",
+        "Клиент",
+        "Операции",
+        "Зрелость"
+      ];
+      const storageKey = "leadership360-anonymous-evaluations-v1";
+
+      const grid = document.querySelector("#competencyGrid");
+      const managerList = document.querySelector("#managerList");
+      const evaluationForm = document.querySelector("#evaluationForm");
+      const scoreList = document.querySelector("#scoreList");
+      const activeManagerTitle = document.querySelector("#activeManagerTitle");
+      const activeManagerMeta = document.querySelector("#activeManagerMeta");
+      const commentInput = document.querySelector("#commentInput");
+      const formMessage = document.querySelector("#formMessage");
+      const summaryTable = document.querySelector("#summaryTable");
+      const commentsPanel = document.querySelector("#commentsPanel");
+      const exportButton = document.querySelector("#exportButton");
+      const resetButton = document.querySelector("#resetButton");
+
+      let activeManagerIndex = 0;
+      let evaluations = loadEvaluations();
+
+      grid.innerHTML = competencies
+        .map((item, index) => `
+          <article class="competency-card">
+            <div class="competency-card__top">
+              <div>
+                <h3>${item.title}</h3>
+                <p class="competency-card__summary">${item.summary}</p>
+              </div>
+              <span class="competency-card__number">${index + 1}</span>
+            </div>
+            <div class="scale-track" aria-hidden="true"></div>
+            <div class="levels">
+              <div class="level"><strong>0</strong><span>${item.low}</span></div>
+              <div class="level"><strong>3</strong><span>${item.mid}</span></div>
+              <div class="level"><strong>5</strong><span>${item.high}</span></div>
+            </div>
+          </article>
+        `)
+        .join("");
+
+      scoreList.innerHTML = competencies
+        .map((item, index) => `
+          <fieldset class="score-row">
+            <legend>${item.title}</legend>
+            <div class="rating-scale" role="radiogroup" aria-label="${item.title}">
+              ${[0, 1, 2, 3, 4, 5]
+                .map((value) => `
+                  <label>
+                    <input type="radio" name="competency-${index}" value="${value}" required />
+                    <span>${value}</span>
+                  </label>
+                `)
+                .join("")}
+            </div>
+          </fieldset>
+        `)
+        .join("");
+
+      function loadEvaluations() {
+        try {
+          const raw = localStorage.getItem(storageKey);
+          const parsed = raw ? JSON.parse(raw) : [];
+          return Array.isArray(parsed) ? parsed : [];
+        } catch {
+          return [];
+        }
+      }
+
+      function saveEvaluations() {
+        localStorage.setItem(storageKey, JSON.stringify(evaluations));
+      }
+
+      function escapeHtml(value) {
+        return String(value)
+          .replaceAll("&", "&amp;")
+          .replaceAll("<", "&lt;")
+          .replaceAll(">", "&gt;")
+          .replaceAll('"', "&quot;")
+          .replaceAll("'", "&#039;");
+      }
+
+      function getManagerEvaluations(managerIndex) {
+        return evaluations.filter((item) => item.managerIndex === managerIndex);
+      }
+
+      function getManagerSummary(managerIndex) {
+        const items = getManagerEvaluations(managerIndex);
+        if (items.length === 0) {
+          return { count: 0, averages: competencies.map(() => null), totalAverage: null };
+        }
+
+        const totals = competencies.map(() => 0);
+        items.forEach((item) => {
+          item.scores.forEach((score, index) => {
+            totals[index] += score;
+          });
+        });
+
+        const averages = totals.map((total) => total / items.length);
+        const totalAverage = averages.reduce((sum, value) => sum + value, 0) / averages.length;
+        return { count: items.length, averages, totalAverage };
+      }
+
+      function formatScore(value) {
+        return value === null ? "—" : value.toFixed(1);
+      }
+
+      function getScoreClass(value) {
+        if (value === null) return "is-empty";
+        if (value < 2.5) return "is-low";
+        if (value >= 4) return "is-high";
+        return "";
+      }
+
+      function renderManagerList() {
+        managerList.innerHTML = managers
+          .map((manager, index) => {
+            const summary = getManagerSummary(index);
+            const countText = `${summary.count} ${getPlural(summary.count, ["оценка", "оценки", "оценок"])}`;
+            return `
+              <button
+                class="manager-button ${index === activeManagerIndex ? "is-active" : ""}"
+                type="button"
+                data-manager="${index}"
+              >
+                <strong>${manager}</strong>
+                <span>${countText}</span>
+              </button>
+            `;
+          })
+          .join("");
+      }
+
+      function renderActiveManager() {
+        const summary = getManagerSummary(activeManagerIndex);
+        activeManagerTitle.textContent = managers[activeManagerIndex];
+        activeManagerMeta.textContent =
+          summary.count === 0
+            ? "Пока нет сохранённых оценок."
+            : `Сохранено ${summary.count} ${getPlural(summary.count, ["анонимная оценка", "анонимные оценки", "анонимных оценок"])}. Средний уровень: ${summary.totalAverage.toFixed(1)} / 5.`;
+      }
+
+      function renderSummaryTable() {
+        const head = `
+          <thead>
+            <tr>
+              <th>Топ-менеджер</th>
+              ${competencyShortNames.map((name) => `<th>${name}</th>`).join("")}
+              <th>Итого</th>
+              <th>n</th>
+            </tr>
+          </thead>
+        `;
+
+        const body = managers
+          .map((manager, managerIndex) => {
+            const summary = getManagerSummary(managerIndex);
+            return `
+              <tr>
+                <td>
+                  <button class="table-manager" type="button" data-manager="${managerIndex}">
+                    ${manager}
+                  </button>
+                </td>
+                ${summary.averages
+                  .map((value) => `<td class="summary-cell ${getScoreClass(value)}">${formatScore(value)}</td>`)
+                  .join("")}
+                <td class="summary-cell ${getScoreClass(summary.totalAverage)}">${formatScore(summary.totalAverage)}</td>
+                <td>${summary.count}</td>
+              </tr>
+            `;
+          })
+          .join("");
+
+        summaryTable.innerHTML = `${head}<tbody>${body}</tbody>`;
+      }
+
+      function renderComments() {
+        const comments = getManagerEvaluations(activeManagerIndex)
+          .filter((item) => item.comment)
+          .slice()
+          .reverse();
+
+        commentsPanel.innerHTML = `
+          <h4>Анонимные комментарии: ${managers[activeManagerIndex]}</h4>
+          ${
+            comments.length === 0
+              ? "<p>Комментариев по этому топ-менеджеру пока нет.</p>"
+              : `<div class="comment-list">
+                  ${comments
+                    .map((item) => `
+                      <div class="comment-item">
+                        <p>${escapeHtml(item.comment)}</p>
+                        <span>Анонимно · ${new Date(item.createdAt).toLocaleDateString("ru-RU")}</span>
+                      </div>
+                    `)
+                    .join("")}
+                </div>`
+          }
+        `;
+      }
+
+      function renderAll() {
+        renderManagerList();
+        renderActiveManager();
+        renderSummaryTable();
+        renderComments();
+      }
+
+      function setActiveManager(index) {
+        activeManagerIndex = index;
+        formMessage.textContent = "";
+        evaluationForm.reset();
+        renderAll();
+      }
+
+      function getPlural(count, forms) {
+        const mod10 = count % 10;
+        const mod100 = count % 100;
+        if (mod10 === 1 && mod100 !== 11) return forms[0];
+        if (mod10 >= 2 && mod10 <= 4 && (mod100 < 12 || mod100 > 14)) return forms[1];
+        return forms[2];
+      }
+
+      function collectScores(formData) {
+        return competencies.map((_, index) => {
+          const value = formData.get(`competency-${index}`);
+          return value === null ? null : Number(value);
+        });
+      }
+
+      function toCsvValue(value) {
+        return `"${String(value).replaceAll('"', '""')}"`;
+      }
+
+      function exportCsv() {
+        const rows = [
+          ["Топ-менеджер", ...competencyShortNames, "Итого", "Количество оценок"],
+          ...managers.map((manager, index) => {
+            const summary = getManagerSummary(index);
+            return [
+              manager,
+              ...summary.averages.map(formatScore),
+              formatScore(summary.totalAverage),
+              summary.count
+            ];
+          })
+        ];
+        const csv = rows.map((row) => row.map(toCsvValue).join(";")).join("\n");
+        const blob = new Blob([`\uFEFF${csv}`], { type: "text/csv;charset=utf-8" });
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement("a");
+        link.href = url;
+        link.download = "leadership-360-summary.csv";
+        link.click();
+        URL.revokeObjectURL(url);
+      }
+
+      managerList.addEventListener("click", (event) => {
+        const button = event.target.closest("[data-manager]");
+        if (button) setActiveManager(Number(button.dataset.manager));
+      });
+
+      summaryTable.addEventListener("click", (event) => {
+        const button = event.target.closest("[data-manager]");
+        if (button) {
+          setActiveManager(Number(button.dataset.manager));
+          document.querySelector("#assessment").scrollIntoView({ block: "start" });
+        }
+      });
+
+      evaluationForm.addEventListener("submit", (event) => {
+        event.preventDefault();
+        const formData = new FormData(evaluationForm);
+        const scores = collectScores(formData);
+
+        if (scores.some((score) => score === null || Number.isNaN(score))) {
+          formMessage.textContent = "Поставьте оценку по каждой компетенции.";
+          return;
+        }
+
+        evaluations.push({
+          managerIndex: activeManagerIndex,
+          scores,
+          comment: commentInput.value.trim().slice(0, 800),
+          createdAt: new Date().toISOString()
+        });
+        saveEvaluations();
+        evaluationForm.reset();
+        formMessage.textContent = "Анонимная оценка сохранена и добавлена в сводку.";
+        renderAll();
+      });
+
+      exportButton.addEventListener("click", exportCsv);
+
+      resetButton.addEventListener("click", () => {
+        if (confirm("Очистить все локально сохранённые демо-оценки?")) {
+          evaluations = [];
+          saveEvaluations();
+          evaluationForm.reset();
+          formMessage.textContent = "Демо-данные очищены.";
+          renderAll();
+        }
+      });
+
+      renderAll();
+    </script>
+  </body>
+</html>

@@ -1,0 +1,9 @@
+.DS_Store
+node_modules/
+test-results/
+playwright-report/
+
+# Local Codex workspace setup, not part of the public landing deployment.
+.codex/
+.agents/
+AGENTS.md
