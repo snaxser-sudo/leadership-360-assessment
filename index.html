@@ -888,6 +888,8 @@
           <div class="nav__links">
             <a href="#competencies">Компетенции</a>
             <a href="#assessment">Диагностика</a>
+            <a href="admin.html">Админка</a>
+            <a href="manager.html">Кабинет</a>
           </div>
         </div>
       </nav>
@@ -1029,10 +1031,13 @@
 
     <footer class="footer">
       <div class="section__inner">
-        Leadership 360 · шаблон лендинга для оценки управленческих компетенций
+        Leadership 360 · <a href="admin.html">супер-админка</a> · <a href="manager.html">кабинет топ-менеджера</a>
       </div>
     </footer>
 
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="supabase-config.js"></script>
+    <script src="shared.js"></script>
     <script>
       const competencies = [
         {
@@ -1128,7 +1133,7 @@
       const resetButton = document.querySelector("#resetButton");
 
       let activeManagerIndex = 0;
-      let evaluations = loadEvaluations();
+      let evaluations = [];
 
       grid.innerHTML = competencies
         .map((item, index) => `
@@ -1381,7 +1386,7 @@
         }
       });
 
-      evaluationForm.addEventListener("submit", (event) => {
+      evaluationForm.addEventListener("submit", async (event) => {
         event.preventDefault();
         const formData = new FormData(evaluationForm);
         const scores = collectScores(formData);
@@ -1391,31 +1396,41 @@
           return;
         }
 
-        evaluations.push({
-          managerIndex: activeManagerIndex,
-          scores,
-          comment: commentInput.value.trim().slice(0, 800),
-          createdAt: new Date().toISOString()
-        });
-        saveEvaluations();
-        evaluationForm.reset();
-        formMessage.textContent = "Анонимная оценка сохранена и добавлена в сводку.";
-        renderAll();
+        try {
+          await L360.addEvaluation(activeManagerIndex, scores, commentInput.value);
+          evaluations = L360.loadEvaluations();
+          evaluationForm.reset();
+          formMessage.textContent =
+            L360.getMode() === "supabase"
+              ? "Анонимная оценка сохранена в Supabase и доступна в админке."
+              : "Анонимная оценка сохранена в локальном демо-режиме.";
+          renderAll();
+        } catch (error) {
+          formMessage.textContent = `Не удалось сохранить оценку: ${error.message}`;
+        }
       });
 
       exportButton.addEventListener("click", exportCsv);
 
       resetButton.addEventListener("click", () => {
+        if (L360.getMode() === "supabase") {
+          formMessage.textContent = "В Supabase-режиме очистка данных доступна только через админку базы.";
+          return;
+        }
         if (confirm("Очистить все локально сохранённые демо-оценки?")) {
-          evaluations = [];
-          saveEvaluations();
+          L360.clearLocalEvaluations();
+          evaluations = L360.loadEvaluations();
           evaluationForm.reset();
           formMessage.textContent = "Демо-данные очищены.";
           renderAll();
         }
       });
 
-      renderAll();
+      (async function boot() {
+        await L360.init({ load: false });
+        evaluations = L360.loadEvaluations();
+        renderAll();
+      })();
     </script>
   </body>
 </html>

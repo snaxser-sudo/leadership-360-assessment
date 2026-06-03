@@ -1,0 +1,847 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Leadership 360 · Супер-админка</title>
+    <meta name="description" content="Супер-админка Leadership 360 для консолидации оценок топ-менеджеров." />
+    <style>
+      :root {
+        --ink: #17202a;
+        --muted: #5c6773;
+        --paper: #f6f3ee;
+        --surface: #ffffff;
+        --line: #d9d2c7;
+        --navy: #21394f;
+        --teal: #1d7f7a;
+        --amber: #c38a2f;
+        --rust: #a4553b;
+        --shadow: 0 18px 55px rgba(23, 32, 42, 0.13);
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        color: var(--ink);
+        background: var(--paper);
+        font-family:
+          Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+          sans-serif;
+        line-height: 1.5;
+      }
+
+      a {
+        color: inherit;
+      }
+
+      .topbar {
+        background: #111820;
+        color: #fff;
+      }
+
+      .topbar__inner,
+      .page {
+        width: min(1180px, calc(100% - 40px));
+        margin: 0 auto;
+      }
+
+      .topbar__inner {
+        min-height: 68px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 20px;
+      }
+
+      .brand {
+        display: flex;
+        align-items: center;
+        gap: 11px;
+        font-weight: 900;
+      }
+
+      .brand__mark {
+        width: 34px;
+        height: 34px;
+        display: grid;
+        place-items: center;
+        border: 1px solid rgba(255, 255, 255, 0.28);
+        background: rgba(255, 255, 255, 0.1);
+      }
+
+      .topbar nav {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 18px;
+        color: rgba(255, 255, 255, 0.78);
+        font-size: 14px;
+      }
+
+      .topbar nav a {
+        text-decoration: none;
+      }
+
+      .page {
+        padding: 42px 0 70px;
+      }
+
+      .hero-row {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) minmax(280px, 0.34fr);
+        gap: 28px;
+        align-items: end;
+        margin-bottom: 26px;
+      }
+
+      .eyebrow {
+        display: block;
+        margin-bottom: 10px;
+        color: var(--teal);
+        font-size: 13px;
+        font-weight: 900;
+        text-transform: uppercase;
+      }
+
+      h1,
+      h2,
+      h3,
+      p {
+        margin-top: 0;
+      }
+
+      h1 {
+        margin-bottom: 12px;
+        font-size: clamp(34px, 4.6vw, 58px);
+        line-height: 1.02;
+      }
+
+      .lead {
+        margin-bottom: 0;
+        max-width: 720px;
+        color: var(--muted);
+        font-size: 18px;
+      }
+
+      .gate {
+        max-width: 520px;
+        padding: 24px;
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        background: var(--surface);
+        box-shadow: var(--shadow);
+      }
+
+      .gate h2 {
+        margin-bottom: 10px;
+        font-size: 26px;
+      }
+
+      .gate-form {
+        display: grid;
+        grid-template-columns: 1fr 1fr auto;
+        gap: 10px;
+        margin-top: 18px;
+      }
+
+      input {
+        min-height: 44px;
+        padding: 0 12px;
+        border: 1px solid #d8d0c5;
+        border-radius: 6px;
+        color: var(--ink);
+        background: #fbfaf7;
+        font: inherit;
+      }
+
+      input:focus {
+        outline: 3px solid rgba(29, 127, 122, 0.18);
+        border-color: var(--teal);
+      }
+
+      button {
+        min-height: 42px;
+        padding: 0 14px;
+        border: 1px solid #cfc6b8;
+        border-radius: 6px;
+        color: var(--navy);
+        background: #fff;
+        font: inherit;
+        font-weight: 900;
+        cursor: pointer;
+      }
+
+      .button-primary {
+        border-color: transparent;
+        color: #111820;
+        background: #f4c86f;
+      }
+
+      .button-danger {
+        color: var(--rust);
+      }
+
+      .message {
+        min-height: 22px;
+        margin: 10px 0 0;
+        color: var(--rust);
+        font-weight: 800;
+      }
+
+      .dashboard[hidden],
+      .gate[hidden] {
+        display: none;
+      }
+
+      .actions {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: flex-end;
+        gap: 10px;
+      }
+
+      .kpis {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 14px;
+        margin-bottom: 20px;
+      }
+
+      .kpi {
+        padding: 18px;
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        background: var(--surface);
+        box-shadow: 0 10px 26px rgba(23, 32, 42, 0.06);
+      }
+
+      .kpi span {
+        display: block;
+        margin-bottom: 8px;
+        color: var(--muted);
+        font-size: 12px;
+        font-weight: 900;
+        text-transform: uppercase;
+      }
+
+      .kpi strong {
+        display: block;
+        font-size: 34px;
+        line-height: 1;
+      }
+
+      .grid {
+        display: grid;
+        grid-template-columns: minmax(240px, 0.34fr) minmax(0, 1fr);
+        gap: 22px;
+        align-items: start;
+      }
+
+      .panel {
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        background: var(--surface);
+        box-shadow: var(--shadow);
+      }
+
+      .panel__head {
+        padding: 18px 20px;
+        border-bottom: 1px solid #ece6dc;
+      }
+
+      .panel__head h2,
+      .panel__head h3 {
+        margin: 0;
+        font-size: 22px;
+        line-height: 1.15;
+      }
+
+      .manager-list {
+        display: grid;
+        gap: 8px;
+        padding: 14px;
+      }
+
+      .manager-button {
+        width: 100%;
+        display: grid;
+        grid-template-columns: 1fr auto;
+        gap: 8px;
+        align-items: center;
+        padding: 12px 14px;
+        text-align: left;
+      }
+
+      .manager-button.is-active {
+        border-color: rgba(29, 127, 122, 0.45);
+        background: #eef8f5;
+        box-shadow: inset 4px 0 0 var(--teal);
+      }
+
+      .manager-button span {
+        color: var(--muted);
+        font-size: 12px;
+      }
+
+      .profile {
+        display: grid;
+        grid-template-columns: minmax(260px, 0.48fr) minmax(0, 1fr);
+        gap: 18px;
+        padding: 20px;
+      }
+
+      .chart {
+        width: 100%;
+        aspect-ratio: 1;
+        border: 1px solid #ece6dc;
+        background: #fbfaf7;
+      }
+
+      .bars {
+        display: grid;
+        gap: 10px;
+      }
+
+      .bar-row {
+        display: grid;
+        grid-template-columns: minmax(150px, 0.44fr) 1fr 42px;
+        gap: 10px;
+        align-items: center;
+      }
+
+      .bar-row span:first-child {
+        font-weight: 800;
+      }
+
+      .bar-track {
+        height: 9px;
+        border-radius: 999px;
+        background: #e8e1d7;
+        overflow: hidden;
+      }
+
+      .bar-fill {
+        height: 100%;
+        border-radius: inherit;
+        background: linear-gradient(90deg, var(--amber), var(--teal));
+      }
+
+      .table-wrap {
+        margin-top: 22px;
+        overflow-x: auto;
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        background: var(--surface);
+      }
+
+      table {
+        width: 100%;
+        min-width: 1080px;
+        border-collapse: collapse;
+        font-size: 14px;
+      }
+
+      th,
+      td {
+        padding: 12px 10px;
+        border-bottom: 1px solid #ece6dc;
+        text-align: center;
+      }
+
+      th {
+        color: var(--muted);
+        background: #fbfaf7;
+        font-size: 12px;
+        font-weight: 900;
+        text-transform: uppercase;
+      }
+
+      th:first-child,
+      td:first-child {
+        min-width: 166px;
+        position: sticky;
+        left: 0;
+        text-align: left;
+        background: inherit;
+      }
+
+      tbody tr {
+        background: var(--surface);
+      }
+
+      tbody tr:hover {
+        background: #fbfaf7;
+      }
+
+      .summary-cell {
+        font-weight: 900;
+      }
+
+      .summary-cell.is-empty {
+        color: #a7a098;
+      }
+
+      .summary-cell.is-low {
+        color: var(--rust);
+      }
+
+      .summary-cell.is-high {
+        color: var(--teal);
+      }
+
+      .comments {
+        margin-top: 22px;
+        padding: 20px;
+      }
+
+      .comments h3 {
+        margin-bottom: 14px;
+        font-size: 22px;
+      }
+
+      .comment-list {
+        display: grid;
+        gap: 10px;
+      }
+
+      .comment-item {
+        padding: 12px 14px;
+        border-left: 4px solid var(--amber);
+        background: #fff7e8;
+        color: #4c3922;
+      }
+
+      .comment-item p {
+        margin: 0;
+      }
+
+      .comment-item span {
+        display: block;
+        margin-top: 6px;
+        color: #7c6a52;
+        font-size: 12px;
+      }
+
+      @media (max-width: 920px) {
+        .hero-row,
+        .grid,
+        .profile {
+          grid-template-columns: 1fr;
+        }
+
+        .actions {
+          justify-content: flex-start;
+        }
+
+        .kpis {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+      }
+
+      @media (max-width: 620px) {
+        .topbar__inner,
+        .page {
+          width: min(100% - 28px, 1180px);
+        }
+
+        .topbar__inner {
+          align-items: flex-start;
+          flex-direction: column;
+          padding: 14px 0;
+        }
+
+        .gate-form,
+        .kpis,
+        .bar-row {
+          grid-template-columns: 1fr;
+        }
+
+        .kpi strong {
+          font-size: 28px;
+        }
+
+        button {
+          width: 100%;
+        }
+      }
+
+      @media print {
+        .topbar,
+        .gate,
+        .actions,
+        .manager-list {
+          display: none !important;
+        }
+
+        body {
+          background: #fff;
+        }
+
+        .page {
+          width: 100%;
+          padding: 0;
+        }
+
+        .panel,
+        .kpi,
+        .table-wrap {
+          box-shadow: none;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header class="topbar">
+      <div class="topbar__inner">
+        <div class="brand">
+          <span class="brand__mark" aria-hidden="true">
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M12 3v18" />
+              <path d="M5 9h14" />
+              <path d="m8 6-3 3 3 3" />
+              <path d="m16 6 3 3-3 3" />
+            </svg>
+          </span>
+          Leadership 360
+        </div>
+        <nav aria-label="Навигация">
+          <a href="index.html">Лендинг</a>
+          <a href="manager.html">Кабинет топ-менеджера</a>
+        </nav>
+      </div>
+    </header>
+
+    <main class="page">
+      <section class="hero-row">
+        <div>
+          <span class="eyebrow">Супер-админка</span>
+          <h1>Консолидация оценок по всей управленческой команде</h1>
+          <p class="lead">
+            Сводка по каждому топ-менеджеру, комментарии, лепестковая диаграмма компетенций
+            и выгрузки для дальнейшей работы.
+          </p>
+        </div>
+        <div class="actions dashboard" id="topActions" hidden>
+          <button type="button" id="exportCsvButton">Скачать CSV</button>
+          <button type="button" id="exportPptButton">Скачать PPT</button>
+          <button type="button" id="printButton">PDF через печать</button>
+          <button class="button-danger" type="button" id="lockButton">Выйти</button>
+        </div>
+      </section>
+
+      <section class="gate" id="gate">
+        <h2>Вход для супер-админа</h2>
+        <p>В Supabase-режиме используйте email и пароль. В демо-режиме работает код SUPER-360.</p>
+        <form class="gate-form" id="adminLogin">
+          <input id="adminEmail" type="email" autocomplete="username" placeholder="Email" />
+          <input id="adminPassword" type="password" autocomplete="current-password" placeholder="Пароль или демо-код" />
+          <button class="button-primary" type="submit">Войти</button>
+        </form>
+        <p class="message" id="gateMessage" aria-live="polite"></p>
+      </section>
+
+      <section class="dashboard" id="dashboard" hidden>
+        <div class="kpis" id="kpis"></div>
+
+        <div class="grid">
+          <aside class="panel">
+            <div class="panel__head">
+              <span class="eyebrow">Люди</span>
+              <h2>Топ-менеджеры</h2>
+            </div>
+            <div class="manager-list" id="managerList"></div>
+          </aside>
+
+          <section class="panel">
+            <div class="panel__head">
+              <span class="eyebrow">Профиль</span>
+              <h2 id="activeManagerTitle">Топ-менеджер 1</h2>
+            </div>
+            <div class="profile">
+              <canvas class="chart" id="radarChart" width="520" height="520" aria-label="Лепестковая диаграмма"></canvas>
+              <div class="bars" id="competencyBars"></div>
+            </div>
+          </section>
+        </div>
+
+        <div class="table-wrap">
+          <table id="summaryTable"></table>
+        </div>
+
+        <section class="panel comments" id="commentsPanel"></section>
+      </section>
+    </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="supabase-config.js"></script>
+    <script src="shared.js"></script>
+    <script>
+      const ADMIN_CODE = "SUPER-360";
+      const adminSessionKey = "leadership360-admin-unlocked";
+
+      const gate = document.querySelector("#gate");
+      const dashboard = document.querySelector("#dashboard");
+      const topActions = document.querySelector("#topActions");
+      const adminLogin = document.querySelector("#adminLogin");
+      const adminEmail = document.querySelector("#adminEmail");
+      const adminPassword = document.querySelector("#adminPassword");
+      const gateMessage = document.querySelector("#gateMessage");
+      const kpis = document.querySelector("#kpis");
+      const managerList = document.querySelector("#managerList");
+      const activeManagerTitle = document.querySelector("#activeManagerTitle");
+      const radarChart = document.querySelector("#radarChart");
+      const competencyBars = document.querySelector("#competencyBars");
+      const summaryTable = document.querySelector("#summaryTable");
+      const commentsPanel = document.querySelector("#commentsPanel");
+      const exportCsvButton = document.querySelector("#exportCsvButton");
+      const exportPptButton = document.querySelector("#exportPptButton");
+      const printButton = document.querySelector("#printButton");
+      const lockButton = document.querySelector("#lockButton");
+
+      let activeManagerIndex = 0;
+
+      function selectFirstRatedManager() {
+        const summaries = L360.getAllSummaries();
+        const firstRatedIndex = summaries.findIndex((summary) => summary.count > 0);
+        if (firstRatedIndex !== -1) activeManagerIndex = firstRatedIndex;
+      }
+
+      async function unlock() {
+        sessionStorage.setItem(adminSessionKey, "1");
+        await L360.refreshEvaluations();
+        gate.hidden = true;
+        dashboard.hidden = false;
+        topActions.hidden = false;
+        selectFirstRatedManager();
+        renderAll();
+      }
+
+      async function lock() {
+        sessionStorage.removeItem(adminSessionKey);
+        await L360.signOut();
+        gate.hidden = false;
+        dashboard.hidden = true;
+        topActions.hidden = true;
+        adminEmail.value = "";
+        adminPassword.value = "";
+      }
+
+      function renderKpis() {
+        const evaluations = L360.loadEvaluations();
+        const portfolio = L360.getPortfolioSummary(evaluations);
+        const summaries = L360.getAllSummaries(evaluations);
+        const ratedManagers = summaries.filter((item) => item.count > 0).length;
+        const weakestIndex = portfolio.competencyAverages.reduce((bestIndex, value, index) => {
+          if (value === null) return bestIndex;
+          if (bestIndex === -1 || value < portfolio.competencyAverages[bestIndex]) return index;
+          return bestIndex;
+        }, -1);
+
+        kpis.innerHTML = `
+          <div class="kpi"><span>Всего оценок</span><strong>${portfolio.totalEvaluations}</strong></div>
+          <div class="kpi"><span>Оценены люди</span><strong>${ratedManagers}/9</strong></div>
+          <div class="kpi"><span>Средний уровень</span><strong>${L360.formatScore(portfolio.totalAverage)}</strong></div>
+          <div class="kpi"><span>Зона внимания</span><strong>${weakestIndex === -1 ? "—" : L360.competencies[weakestIndex].short}</strong></div>
+        `;
+      }
+
+      function renderManagerList() {
+        const evaluations = L360.loadEvaluations();
+        managerList.innerHTML = L360.managers
+          .map((manager, index) => {
+            const summary = L360.getManagerSummary(index, evaluations);
+            return `
+              <button class="manager-button ${index === activeManagerIndex ? "is-active" : ""}" type="button" data-manager="${index}">
+                <strong>${manager.name}</strong>
+                <span>${summary.count} ${L360.getPlural(summary.count, ["оценка", "оценки", "оценок"])}</span>
+              </button>
+            `;
+          })
+          .join("");
+      }
+
+      function renderProfile() {
+        const evaluations = L360.loadEvaluations();
+        const manager = L360.managers[activeManagerIndex];
+        const summary = L360.getManagerSummary(activeManagerIndex, evaluations);
+        activeManagerTitle.textContent = `${manager.name} · ${L360.formatScore(summary.totalAverage)} / 5`;
+        L360.drawRadar(radarChart, summary.averages);
+
+        competencyBars.innerHTML = L360.competencies
+          .map((item, index) => {
+            const value = summary.averages[index];
+            const width = value === null ? 0 : (value / 5) * 100;
+            return `
+              <div class="bar-row">
+                <span>${item.title}</span>
+                <span class="bar-track"><span class="bar-fill" style="width:${width}%"></span></span>
+                <strong>${L360.formatScore(value)}</strong>
+              </div>
+            `;
+          })
+          .join("");
+      }
+
+      function renderSummaryTable() {
+        const evaluations = L360.loadEvaluations();
+        const head = `
+          <thead>
+            <tr>
+              <th>Топ-менеджер</th>
+              ${L360.competencies.map((item) => `<th>${item.short}</th>`).join("")}
+              <th>Итого</th>
+              <th>n</th>
+            </tr>
+          </thead>
+        `;
+        const body = L360.managers
+          .map((manager, index) => {
+            const summary = L360.getManagerSummary(index, evaluations);
+            return `
+              <tr>
+                <td><button type="button" data-manager="${index}">${manager.name}</button></td>
+                ${summary.averages
+                  .map((value) => `<td class="summary-cell ${L360.scoreClass(value)}">${L360.formatScore(value)}</td>`)
+                  .join("")}
+                <td class="summary-cell ${L360.scoreClass(summary.totalAverage)}">${L360.formatScore(summary.totalAverage)}</td>
+                <td>${summary.count}</td>
+              </tr>
+            `;
+          })
+          .join("");
+        summaryTable.innerHTML = `${head}<tbody>${body}</tbody>`;
+      }
+
+      function renderComments() {
+        const evaluations = L360.loadEvaluations();
+        const comments = L360.getManagerEvaluations(activeManagerIndex, evaluations)
+          .filter((item) => item.comment)
+          .slice()
+          .reverse();
+
+        commentsPanel.innerHTML = `
+          <h3>Анонимные комментарии: ${L360.managers[activeManagerIndex].name}</h3>
+          ${
+            comments.length === 0
+              ? "<p>Комментариев по выбранному топ-менеджеру пока нет.</p>"
+              : `<div class="comment-list">
+                  ${comments
+                    .map((item) => `
+                      <div class="comment-item">
+                        <p>${L360.escapeHtml(item.comment)}</p>
+                        <span>Анонимно · ${new Date(item.createdAt).toLocaleDateString("ru-RU")}</span>
+                      </div>
+                    `)
+                    .join("")}
+                </div>`
+          }
+        `;
+      }
+
+      function renderAll() {
+        renderKpis();
+        renderManagerList();
+        renderProfile();
+        renderSummaryTable();
+        renderComments();
+      }
+
+      function setActiveManager(index) {
+        activeManagerIndex = index;
+        renderAll();
+      }
+
+      function exportCsv() {
+        const csv = L360.summaryCsv(L360.loadEvaluations());
+        L360.downloadBlob("leadership-360-admin-summary.csv", `\uFEFF${csv}`, "text/csv;charset=utf-8");
+      }
+
+      function exportPpt() {
+        const evaluations = L360.loadEvaluations();
+        const slides = L360.managers
+          .map((manager, index) => {
+            const summary = L360.getManagerSummary(index, evaluations);
+            const rows = L360.competencies
+              .map((item, itemIndex) => `<tr><td>${item.title}</td><td>${L360.formatScore(summary.averages[itemIndex])}</td></tr>`)
+              .join("");
+            return `
+              <section class="slide">
+                <h1>${manager.name}</h1>
+                <h2>Средний уровень: ${L360.formatScore(summary.totalAverage)} / 5 · n=${summary.count}</h2>
+                <table>${rows}</table>
+              </section>
+            `;
+          })
+          .join("");
+        const pptHtml = `
+          <html>
+            <head>
+              <meta charset="utf-8">
+              <style>
+                body { font-family: Arial, sans-serif; color: #17202a; }
+                .slide { page-break-after: always; width: 960px; min-height: 540px; padding: 48px; }
+                h1 { font-size: 42px; margin: 0 0 18px; }
+                h2 { font-size: 24px; margin: 0 0 28px; color: #1d7f7a; }
+                table { border-collapse: collapse; width: 100%; font-size: 20px; }
+                td { border-bottom: 1px solid #d9d2c7; padding: 12px; }
+                td:last-child { font-weight: bold; text-align: right; }
+              </style>
+            </head>
+            <body>${slides}</body>
+          </html>
+        `;
+        L360.downloadBlob("leadership-360-report.ppt", pptHtml, "application/vnd.ms-powerpoint;charset=utf-8");
+      }
+
+      adminLogin.addEventListener("submit", async (event) => {
+        event.preventDefault();
+
+        try {
+          if (L360.isRemoteConfigured()) {
+            const profile = await L360.signIn(adminEmail.value.trim(), adminPassword.value);
+            if (!profile || profile.role !== "super_admin") {
+              await L360.signOut();
+              gateMessage.textContent = "У пользователя нет прав супер-админа.";
+              return;
+            }
+            gateMessage.textContent = "";
+            await unlock();
+            return;
+          }
+
+          if (adminPassword.value.trim() === ADMIN_CODE || adminEmail.value.trim() === ADMIN_CODE) {
+            gateMessage.textContent = "";
+            await unlock();
+          } else {
+            gateMessage.textContent = "Неверный демо-код доступа.";
+          }
+        } catch (error) {
+          gateMessage.textContent = `Ошибка входа: ${error.message}`;
+        }
+      });
+
+      managerList.addEventListener("click", (event) => {
+        const button = event.target.closest("[data-manager]");
+        if (button) setActiveManager(Number(button.dataset.manager));
+      });
+
+      summaryTable.addEventListener("click", (event) => {
+        const button = event.target.closest("[data-manager]");
+        if (button) setActiveManager(Number(button.dataset.manager));
+      });
+
+      exportCsvButton.addEventListener("click", exportCsv);
+      exportPptButton.addEventListener("click", exportPpt);
+      printButton.addEventListener("click", () => window.print());
+      lockButton.addEventListener("click", lock);
+      window.addEventListener("storage", renderAll);
+
+      (async function boot() {
+        await L360.init({ load: false });
+        if (sessionStorage.getItem(adminSessionKey) === "1") await unlock();
+      })();
+    </script>
+  </body>
+</html>

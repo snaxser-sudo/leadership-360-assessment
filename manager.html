@@ -1,0 +1,646 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Leadership 360 · Кабинет топ-менеджера</title>
+    <meta name="description" content="Личный кабинет топ-менеджера для просмотра обезличенной обратной связи." />
+    <style>
+      :root {
+        --ink: #17202a;
+        --muted: #5c6773;
+        --paper: #f6f3ee;
+        --surface: #ffffff;
+        --line: #d9d2c7;
+        --navy: #21394f;
+        --teal: #1d7f7a;
+        --amber: #c38a2f;
+        --rust: #a4553b;
+        --shadow: 0 18px 55px rgba(23, 32, 42, 0.13);
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        color: var(--ink);
+        background: var(--paper);
+        font-family:
+          Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+          sans-serif;
+        line-height: 1.5;
+      }
+
+      a {
+        color: inherit;
+      }
+
+      .topbar {
+        background: #111820;
+        color: #fff;
+      }
+
+      .topbar__inner,
+      .page {
+        width: min(1120px, calc(100% - 40px));
+        margin: 0 auto;
+      }
+
+      .topbar__inner {
+        min-height: 68px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 20px;
+      }
+
+      .brand {
+        display: flex;
+        align-items: center;
+        gap: 11px;
+        font-weight: 900;
+      }
+
+      .brand__mark {
+        width: 34px;
+        height: 34px;
+        display: grid;
+        place-items: center;
+        border: 1px solid rgba(255, 255, 255, 0.28);
+        background: rgba(255, 255, 255, 0.1);
+      }
+
+      .topbar nav {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 18px;
+        color: rgba(255, 255, 255, 0.78);
+        font-size: 14px;
+      }
+
+      .topbar nav a {
+        text-decoration: none;
+      }
+
+      .page {
+        padding: 42px 0 70px;
+      }
+
+      .hero-row {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) auto;
+        gap: 24px;
+        align-items: end;
+        margin-bottom: 26px;
+      }
+
+      .eyebrow {
+        display: block;
+        margin-bottom: 10px;
+        color: var(--teal);
+        font-size: 13px;
+        font-weight: 900;
+        text-transform: uppercase;
+      }
+
+      h1,
+      h2,
+      h3,
+      p {
+        margin-top: 0;
+      }
+
+      h1 {
+        margin-bottom: 12px;
+        font-size: clamp(34px, 4.6vw, 58px);
+        line-height: 1.02;
+      }
+
+      .lead {
+        margin-bottom: 0;
+        max-width: 720px;
+        color: var(--muted);
+        font-size: 18px;
+      }
+
+      .gate,
+      .panel,
+      .kpi {
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        background: var(--surface);
+        box-shadow: var(--shadow);
+      }
+
+      .gate {
+        max-width: 520px;
+        padding: 24px;
+      }
+
+      .gate h2 {
+        margin-bottom: 10px;
+        font-size: 26px;
+      }
+
+      .gate-form {
+        display: grid;
+        grid-template-columns: 1fr 1fr auto;
+        gap: 10px;
+        margin-top: 18px;
+      }
+
+      input {
+        min-height: 44px;
+        padding: 0 12px;
+        border: 1px solid #d8d0c5;
+        border-radius: 6px;
+        color: var(--ink);
+        background: #fbfaf7;
+        font: inherit;
+      }
+
+      input:focus {
+        outline: 3px solid rgba(29, 127, 122, 0.18);
+        border-color: var(--teal);
+      }
+
+      button {
+        min-height: 42px;
+        padding: 0 14px;
+        border: 1px solid #cfc6b8;
+        border-radius: 6px;
+        color: var(--navy);
+        background: #fff;
+        font: inherit;
+        font-weight: 900;
+        cursor: pointer;
+      }
+
+      .button-primary {
+        border-color: transparent;
+        color: #111820;
+        background: #f4c86f;
+      }
+
+      .button-danger {
+        color: var(--rust);
+      }
+
+      .message {
+        min-height: 22px;
+        margin: 10px 0 0;
+        color: var(--rust);
+        font-weight: 800;
+      }
+
+      .dashboard[hidden],
+      .gate[hidden],
+      .actions[hidden] {
+        display: none;
+      }
+
+      .actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        justify-content: flex-end;
+      }
+
+      .kpis {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 14px;
+        margin-bottom: 22px;
+      }
+
+      .kpi {
+        padding: 18px;
+      }
+
+      .kpi span {
+        display: block;
+        margin-bottom: 8px;
+        color: var(--muted);
+        font-size: 12px;
+        font-weight: 900;
+        text-transform: uppercase;
+      }
+
+      .kpi strong {
+        display: block;
+        font-size: 34px;
+        line-height: 1;
+      }
+
+      .profile {
+        display: grid;
+        grid-template-columns: minmax(280px, 0.44fr) minmax(0, 1fr);
+        gap: 18px;
+        padding: 20px;
+      }
+
+      .chart {
+        width: 100%;
+        aspect-ratio: 1;
+        border: 1px solid #ece6dc;
+        background: #fbfaf7;
+      }
+
+      .bars {
+        display: grid;
+        gap: 10px;
+      }
+
+      .bar-row {
+        display: grid;
+        grid-template-columns: minmax(160px, 0.42fr) 1fr 42px;
+        gap: 10px;
+        align-items: center;
+      }
+
+      .bar-row span:first-child {
+        font-weight: 800;
+      }
+
+      .bar-track {
+        height: 9px;
+        border-radius: 999px;
+        background: #e8e1d7;
+        overflow: hidden;
+      }
+
+      .bar-fill {
+        height: 100%;
+        border-radius: inherit;
+        background: linear-gradient(90deg, var(--amber), var(--teal));
+      }
+
+      .competency-note {
+        margin: 14px 0 0;
+        padding: 14px;
+        border-left: 4px solid var(--teal);
+        background: #eef8f5;
+        color: #244e4b;
+      }
+
+      .comments {
+        margin-top: 22px;
+        padding: 20px;
+      }
+
+      .comments h2 {
+        margin-bottom: 14px;
+        font-size: 24px;
+      }
+
+      .comment-list {
+        display: grid;
+        gap: 10px;
+      }
+
+      .comment-item {
+        padding: 12px 14px;
+        border-left: 4px solid var(--amber);
+        background: #fff7e8;
+        color: #4c3922;
+      }
+
+      .comment-item p {
+        margin: 0;
+      }
+
+      .comment-item span {
+        display: block;
+        margin-top: 6px;
+        color: #7c6a52;
+        font-size: 12px;
+      }
+
+      @media (max-width: 920px) {
+        .hero-row,
+        .profile {
+          grid-template-columns: 1fr;
+        }
+
+        .actions {
+          justify-content: flex-start;
+        }
+
+        .kpis {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+      }
+
+      @media (max-width: 620px) {
+        .topbar__inner,
+        .page {
+          width: min(100% - 28px, 1120px);
+        }
+
+        .topbar__inner {
+          align-items: flex-start;
+          flex-direction: column;
+          padding: 14px 0;
+        }
+
+        .gate-form,
+        .kpis,
+        .bar-row {
+          grid-template-columns: 1fr;
+        }
+
+        .kpi strong {
+          font-size: 28px;
+        }
+
+        button {
+          width: 100%;
+        }
+      }
+
+      @media print {
+        .topbar,
+        .gate,
+        .actions {
+          display: none !important;
+        }
+
+        body {
+          background: #fff;
+        }
+
+        .page {
+          width: 100%;
+          padding: 0;
+        }
+
+        .panel,
+        .kpi {
+          box-shadow: none;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header class="topbar">
+      <div class="topbar__inner">
+        <div class="brand">
+          <span class="brand__mark" aria-hidden="true">
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M12 3v18" />
+              <path d="M5 9h14" />
+              <path d="m8 6-3 3 3 3" />
+              <path d="m16 6 3 3-3 3" />
+            </svg>
+          </span>
+          Leadership 360
+        </div>
+        <nav aria-label="Навигация">
+          <a href="index.html">Лендинг</a>
+          <a href="admin.html">Супер-админка</a>
+        </nav>
+      </div>
+    </header>
+
+    <main class="page">
+      <section class="hero-row">
+        <div>
+          <span class="eyebrow">Кабинет топ-менеджера</span>
+          <h1 id="pageTitle">Личная обратная связь по 9 компетенциям</h1>
+          <p class="lead">
+            Индивидуальная сводка показывает только ваш профиль: средние оценки, зоны роста
+            и обезличенные комментарии участников оценки.
+          </p>
+        </div>
+        <div class="actions" id="topActions" hidden>
+          <button type="button" id="exportCsvButton">Скачать CSV</button>
+          <button type="button" id="printButton">PDF через печать</button>
+          <button class="button-danger" type="button" id="lockButton">Выйти</button>
+        </div>
+      </section>
+
+      <section class="gate" id="gate">
+        <h2>Вход топ-менеджера</h2>
+        <p>В Supabase-режиме используйте email и пароль. В демо-режиме работают коды TM1-TM9.</p>
+        <form class="gate-form" id="managerLogin">
+          <input id="managerEmail" type="email" autocomplete="username" placeholder="Email" />
+          <input id="managerPassword" type="password" autocomplete="current-password" placeholder="Пароль или демо-код" />
+          <button class="button-primary" type="submit">Войти</button>
+        </form>
+        <p class="message" id="gateMessage" aria-live="polite"></p>
+      </section>
+
+      <section class="dashboard" id="dashboard" hidden>
+        <div class="kpis" id="kpis"></div>
+
+        <section class="panel">
+          <div class="profile">
+            <canvas class="chart" id="radarChart" width="520" height="520" aria-label="Лепестковая диаграмма"></canvas>
+            <div>
+              <div class="bars" id="competencyBars"></div>
+              <div class="competency-note" id="competencyNote"></div>
+            </div>
+          </div>
+        </section>
+
+        <section class="panel comments" id="commentsPanel"></section>
+      </section>
+    </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="supabase-config.js"></script>
+    <script src="shared.js"></script>
+    <script>
+      const managerSessionKey = "leadership360-manager-index";
+
+      const gate = document.querySelector("#gate");
+      const dashboard = document.querySelector("#dashboard");
+      const topActions = document.querySelector("#topActions");
+      const managerLogin = document.querySelector("#managerLogin");
+      const managerEmail = document.querySelector("#managerEmail");
+      const managerPassword = document.querySelector("#managerPassword");
+      const gateMessage = document.querySelector("#gateMessage");
+      const pageTitle = document.querySelector("#pageTitle");
+      const kpis = document.querySelector("#kpis");
+      const radarChart = document.querySelector("#radarChart");
+      const competencyBars = document.querySelector("#competencyBars");
+      const competencyNote = document.querySelector("#competencyNote");
+      const commentsPanel = document.querySelector("#commentsPanel");
+      const exportCsvButton = document.querySelector("#exportCsvButton");
+      const printButton = document.querySelector("#printButton");
+      const lockButton = document.querySelector("#lockButton");
+
+      let managerIndex = null;
+
+      function findManagerByCode(code) {
+        return L360.managers.findIndex((manager) => manager.code.toLowerCase() === code.trim().toLowerCase());
+      }
+
+      async function unlock(index) {
+        managerIndex = index;
+        sessionStorage.setItem(managerSessionKey, String(index));
+        await L360.refreshEvaluations();
+        gate.hidden = true;
+        dashboard.hidden = false;
+        topActions.hidden = false;
+        renderAll();
+      }
+
+      async function lock() {
+        sessionStorage.removeItem(managerSessionKey);
+        await L360.signOut();
+        managerIndex = null;
+        gate.hidden = false;
+        dashboard.hidden = true;
+        topActions.hidden = true;
+        pageTitle.textContent = "Личная обратная связь по 9 компетенциям";
+        managerEmail.value = "";
+        managerPassword.value = "";
+      }
+
+      function getStrongWeak(summary) {
+        const scored = summary.averages
+          .map((value, index) => ({ value, index }))
+          .filter((item) => item.value !== null);
+        if (scored.length === 0) return { strongest: null, weakest: null };
+        const strongest = scored.reduce((best, item) => (item.value > best.value ? item : best), scored[0]);
+        const weakest = scored.reduce((best, item) => (item.value < best.value ? item : best), scored[0]);
+        return { strongest, weakest };
+      }
+
+      function renderKpis(summary) {
+        const { strongest, weakest } = getStrongWeak(summary);
+        kpis.innerHTML = `
+          <div class="kpi"><span>Оценок</span><strong>${summary.count}</strong></div>
+          <div class="kpi"><span>Средний уровень</span><strong>${L360.formatScore(summary.totalAverage)}</strong></div>
+          <div class="kpi"><span>Сильнее всего</span><strong>${strongest ? L360.competencies[strongest.index].short : "—"}</strong></div>
+          <div class="kpi"><span>Зона роста</span><strong>${weakest ? L360.competencies[weakest.index].short : "—"}</strong></div>
+        `;
+      }
+
+      function renderProfile(summary) {
+        L360.drawRadar(radarChart, summary.averages);
+        competencyBars.innerHTML = L360.competencies
+          .map((item, index) => {
+            const value = summary.averages[index];
+            const width = value === null ? 0 : (value / 5) * 100;
+            return `
+              <div class="bar-row">
+                <span>${item.title}</span>
+                <span class="bar-track"><span class="bar-fill" style="width:${width}%"></span></span>
+                <strong>${L360.formatScore(value)}</strong>
+              </div>
+            `;
+          })
+          .join("");
+
+        const { weakest } = getStrongWeak(summary);
+        competencyNote.innerHTML =
+          weakest === null
+            ? "По этому профилю пока нет оценок."
+            : `<strong>Главный фокус:</strong> ${L360.competencies[weakest.index].title}. ${L360.competencies[weakest.index].summary}`;
+      }
+
+      function renderComments() {
+        const comments = L360.getManagerEvaluations(managerIndex)
+          .filter((item) => item.comment)
+          .slice()
+          .reverse();
+
+        commentsPanel.innerHTML = `
+          <h2>Обезличенная обратная связь</h2>
+          ${
+            comments.length === 0
+              ? "<p>Комментариев пока нет.</p>"
+              : `<div class="comment-list">
+                  ${comments
+                    .map((item) => `
+                      <div class="comment-item">
+                        <p>${L360.escapeHtml(item.comment)}</p>
+                        <span>Анонимно · ${new Date(item.createdAt).toLocaleDateString("ru-RU")}</span>
+                      </div>
+                    `)
+                    .join("")}
+                </div>`
+          }
+        `;
+      }
+
+      function renderAll() {
+        if (managerIndex === null) return;
+        const manager = L360.managers[managerIndex];
+        const summary = L360.getManagerSummary(managerIndex);
+        pageTitle.textContent = `${manager.name}: личный профиль компетенций`;
+        renderKpis(summary);
+        renderProfile(summary);
+        renderComments();
+      }
+
+      function exportCsv() {
+        const manager = L360.managers[managerIndex];
+        const summary = L360.getManagerSummary(managerIndex);
+        const rows = [
+          ["Топ-менеджер", manager.name],
+          ["Количество оценок", summary.count],
+          ["Средний уровень", L360.formatScore(summary.totalAverage)],
+          [],
+          ["Компетенция", "Средняя оценка"],
+          ...L360.competencies.map((item, index) => [item.title, L360.formatScore(summary.averages[index])]),
+          [],
+          ["Анонимные комментарии"],
+          ...L360.getManagerEvaluations(managerIndex)
+            .filter((item) => item.comment)
+            .map((item) => [item.comment])
+        ];
+        const csv = rows.map((row) => row.map(L360.csvValue).join(";")).join("\n");
+        L360.downloadBlob(`leadership-360-${manager.code}.csv`, `\uFEFF${csv}`, "text/csv;charset=utf-8");
+      }
+
+      managerLogin.addEventListener("submit", async (event) => {
+        event.preventDefault();
+
+        try {
+          if (L360.isRemoteConfigured()) {
+            const profile = await L360.signIn(managerEmail.value.trim(), managerPassword.value);
+            if (!profile || profile.role !== "manager" || !profile.manager_id) {
+              await L360.signOut();
+              gateMessage.textContent = "У пользователя нет прав топ-менеджера.";
+              return;
+            }
+            gateMessage.textContent = "";
+            await unlock(profile.manager_id - 1);
+            return;
+          }
+
+          const index = findManagerByCode(managerPassword.value || managerEmail.value);
+          if (index === -1) {
+            gateMessage.textContent = "Неверный демо-код.";
+            return;
+          }
+          gateMessage.textContent = "";
+          await unlock(index);
+        } catch (error) {
+          gateMessage.textContent = `Ошибка входа: ${error.message}`;
+        }
+      });
+
+      exportCsvButton.addEventListener("click", exportCsv);
+      printButton.addEventListener("click", () => window.print());
+      lockButton.addEventListener("click", lock);
+      window.addEventListener("storage", renderAll);
+
+      (async function boot() {
+        await L360.init({ load: false });
+        const savedIndexRaw = sessionStorage.getItem(managerSessionKey);
+        if (savedIndexRaw !== null) {
+          const savedIndex = Number(savedIndexRaw);
+          if (Number.isInteger(savedIndex) && savedIndex >= 0 && savedIndex < L360.managers.length) {
+            await unlock(savedIndex);
+          }
+        }
+      })();
+    </script>
+  </body>
+</html>
